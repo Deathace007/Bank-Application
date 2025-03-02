@@ -1,9 +1,11 @@
 from flask import Flask, render_template, redirect, url_for, request, g
 import sqlite3
+import os
 
 app = Flask(__name__)
 app.secret_key = 'supersecretkey'
-DATABASE = 'users.db'
+DATABASE = 'backend/users.db'
+initialized = False
 
 def get_db():
     db = getattr(g, '_database', None)
@@ -18,11 +20,19 @@ def close_connection(exception):
         db.close()
 
 def create_table():
-    with app.app_context():
-        db = get_db()
-        cursor = db.cursor()
-        cursor.execute("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, username TEXT UNIQUE, password TEXT)")
-        db.commit()
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, username TEXT UNIQUE, password TEXT)")
+    db.commit()
+
+@app.before_request
+def initialize_database():
+    global initialized
+    if not initialized:
+        if not os.path.exists(os.path.dirname(DATABASE)):
+            os.makedirs(os.path.dirname(DATABASE))
+        create_table()
+        initialized = True
 
 @app.route('/')
 def home():
@@ -59,5 +69,4 @@ def register():
     return render_template('register.html')
 
 if __name__ == '__main__':
-    create_table()
     app.run(debug=True)
