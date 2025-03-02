@@ -3,5 +3,12 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-<h1>Welcome to the Home Page</h1>
+<div class="jumbotron">
+    <h1 class="display-4">Welcome to the Bank App!</h1>
+    <p class="lead">This is a simple banking application built with Flask.</p>
+    <hr class="my-4">
+    <p>To access your account, please login or register.</p>
+    <a class="btn btn-primary btn-lg" href="{{ url_for('login') }}" role="button">Login</a>
+    <a class="btn btn-secondary btn-lg" href="{{ url_for('register') }}" role="button">Register</a>
+</div>
 {% endblock %}

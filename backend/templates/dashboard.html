@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<h2>Dashboard</h2>
+<p>Welcome, {{ current_user.username }}!</p>
+<ul>
+    <li>Email: {{ current_user.email }}</li>
+    <li>Balance: $0.00 (This should be dynamically fetched)</li>
+    <li>Recent Transactions: (This should be dynamically fetched)</li>
+</ul>
+<a href="#" class="btn btn-primary">View Transaction History</a>
+<a href="#" class="btn btn-secondary">Transfer Money</a>
+{% endblock %}s
